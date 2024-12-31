@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="patients.html">
+<head>
+    <meta charset="UTF-8">
+    <title>New Patient</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container p-3">
+        <div class="card">
+            <div class="card-header">Adding New Patient</div>
+            <div class="card-body">
+                <form th:action="@{/register}" th:object="${patient}" method="post">
+                    <!-- Name Field -->
+                    <div class="mb-3 mt-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input class="form-control" type="text" id="name" th:field="*{name}" placeholder="Enter name" required>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="mb-3 mt-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input class="form-control" type="email" id="email" th:field="*{email}" placeholder="Enter email" required>
+                    </div>
+
+                    <!-- Gender Field -->
+                    <div class="mb-3 mt-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" th:field="*{gender}" required>
+                            <option value="" disabled selected>Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-3 mt-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input class="form-control" type="password" id="password" th:field="*{password}" placeholder="Enter password" required>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label for="repeatPassword" class="form-label">Repeat Password</label>
+                        <input class="form-control" type="password" id="repeatPassword" placeholder="Repeat password" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function validatePassword() {
+        const password = document.getElementById("password").value;
+        const repeatPassword = document.getElementById("repeatPassword").value;
+
+        if (password !== repeatPassword) {
+            alert("Passwords do not match!");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>
