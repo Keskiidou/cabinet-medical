@@ -32,13 +32,19 @@ public class Patient {
     @NotNull(message = "Gender is mandatory")
     private String gender;
 
-
-    private String Password;
-
+    // Corrected field name to lowercase "password"
+    @Column(name = "password")
+    private String password;  // Change to lowercase 'password'
 
     private String phone;
     private String address;
     private String symptoms;
 
-}
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+}

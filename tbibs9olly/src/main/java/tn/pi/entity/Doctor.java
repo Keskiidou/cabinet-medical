@@ -1,10 +1,7 @@
 package tn.pi.entity;
 
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import lombok.*;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
@@ -13,13 +10,22 @@ import jakarta.persistence.*;
 @AllArgsConstructor
 @Builder
 public class Doctor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+
     private String name;
     private String specialization;
     private String email;
     private String phone;
+    private String address;
+    private String accessCode;
 
-
+    public Doctor(Long id) {
+        this.id = id;
+    }
+    public void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
+    }
 }

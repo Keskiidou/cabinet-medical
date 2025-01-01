@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>All Patients</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 250px;
+      background-color: #343a40;
+      color: white;
+      padding-top: 20px;
+    }
+    .sidebar a {
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+    }
+    .sidebar a:hover {
+      background-color: #007bff;
+    }
+    .content {
+      margin-left: 260px;
+      padding-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <h4 class="text-center text-white">Doctor Dashboard</h4>
+  <a href="/doctor/dashboard">Dashboard</a>
+  <a href="/doctor/patient" class="active">Patients</a>
+  <a href="#payments">Payments</a>
+  <a href="#settings">Settings</a>
+</div>
+
+<!-- Main Content -->
+<div class="content container mt-4">
+  <h1 class="mb-4">Patient List</h1>
+
+  <!-- Search Form -->
+  <form th:action="@{/doctor/patient}" method="get" class="mb-4">
+    <div class="input-group">
+      <input type="text" name="keyword" th:value="${keyword}" class="form-control" placeholder="Search by name...">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+
+  <!-- Patient Table -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Symptoms</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="patient, iterStat : ${patients}">
+        <td th:text="${iterStat.index + 1}"></td>
+        <td th:text="${patient.name}"></td>
+        <td th:text="${patient.email}"></td>
+        <td th:text="${patient.gender}"></td>
+        <td th:text="${patient.phone}"></td>
+        <td th:text="${patient.address}"></td>
+        <td th:text="${patient.symptoms}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav th:if="${pages.length > 0}">
+    <ul class="pagination">
+      <li class="page-item" th:classappend="${page == 0 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/doctor/patient(page=${page - 1}, keyword=${keyword})}">Previous</a>
+      </li>
+      <li class="page-item" th:each="i : ${pages}" th:classappend="${i == page ? 'active' : ''}">
+        <a class="page-link" th:href="@{/doctor/patient(page=${i}, keyword=${keyword})}" th:text="${i + 1}"></a>
+      </li>
+      <li class="page-item" th:classappend="${page == pages.length - 1 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{/doctor/patient(page=${page + 1}, keyword=${keyword})}">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

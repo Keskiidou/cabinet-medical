@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Login</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            max-width: 400px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+        .form-control {
+            border-radius: 0.375rem;
+        }
+        .btn-primary {
+            width: 100%;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .alert-danger {
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container p-3">
+    <div class="card">
+        <div class="card-header">Doctor Login</div>
+        <div class="card-body">
+            <form th:action="@{/doctor/login}" method="post">
+                <!-- Name Field -->
+                <div class="mb-3 mt-3">
+                    <label for="name" class="form-label">Doctor's Name</label>
+                    <input class="form-control" type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+
+                <!-- Access Code Field (Hidden input) -->
+                <div class="mb-3 mt-3">
+                    <label for="accessCode" class="form-label">Access Code</label>
+                    <input class="form-control" type="password" id="accessCode" name="accessCode" placeholder="Enter your access code" required>
+                </div>
+
+                <!-- Error Message (if authentication fails) -->
+                <div th:if="${error}" class="alert alert-danger">
+                    <span th:text="${error}"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

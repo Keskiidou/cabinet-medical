@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Dashboard</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #007bff;
+        }
+        .content {
+            margin-left: 260px;
+            padding-top: 20px;
+        }
+        .navbar {
+            background-color: #007bff;
+        }
+        .navbar .navbar-brand {
+            color: white;
+        }
+        .navbar a {
+            color: white;
+        }
+        .navbar a:hover {
+            color: #d3d3d3;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h4 class="text-center text-white">Doctor Dashboard</h4>
+    <a th:href="@{/schedules/add}">Schedule</a>
+    <a th:href="@{/doctor/patient}">Patients</a>
+    <a href="#payments">Payments</a>
+    <a href="#settings">Settings</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Welcome, Doctor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container p-4">
+        <h3>Dashboard Overview</h3>
+        <p>Here you can manage your schedule, view patients, payments, and more. Use the sidebar to navigate.</p>
+
+        <!-- Sample Content Sections -->
+        <div id="schedule">
+            <h4>Schedule</h4>
+            <p>Manage your appointments, set availability, etc.</p>
+        </div>
+
+        <div id="patients">
+            <h4>Patients</h4>
+            <p>View patient records, history, etc.</p>
+        </div>
+
+        <div id="payments">
+            <h4>Payments</h4>
+            <p>Manage payments, bills, and financial records.</p>
+        </div>
+
+        <div id="settings">
+            <h4>Settings</h4>
+            <p>Update your account settings.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">Doctor Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Profile Information -->
+                <div class="text-center">
+                    <img src="/female-doctor-profile-icon-flat-style-vector-eps-2PK5PP2.jpg" alt="Doctor's Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;">
+                    <h5 th:text="${doctor.name}">Doctor Name</h5>
+                    <p><strong>Email:</strong> <span th:text="${doctor.email}">doctor@example.com</span></p>
+                    <p><strong>Phone:</strong> <span th:text="${doctor.phone}">+1 234 567 890</span></p>
+                    <p><strong>Address:</strong> <span th:text="${doctor.address}">1234 Medical St., City, Country</span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (required for collapsible navbar and modal) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
