@@ -63,17 +63,23 @@ public class doctorController {
         }
     }
 
+    private Long getCurrentDoctorId(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getId();
+        }
+        return null; // Or throw an exception depending on your logic
+    }
     // Dashboard for logged-in doctor
     @GetMapping("/doctor/dashboard")
-    public String doctorDashboard(Model model, HttpSession session) {
-        Doctor doctor = (Doctor) session.getAttribute("doctor"); // Get doctor object from session
-        if (doctor != null) {
-            model.addAttribute("doctor", doctor); // Add doctor data to the model for displaying
-            System.out.println("Doctor info in session: " + doctor.getName() + ", " + doctor.getEmail() + ", " + doctor.getAddress() + ", " + doctor.getPhone());
+    public String dashboard(Model model, HttpSession session) {
+        Long doctorId = getCurrentDoctorId(session);  // Get the current doctor's ID
+        if (doctorId != null) {
+            model.addAttribute("doctorId", doctorId);  // Add the doctorId to the model
+            return "doctor_dashboard";  // Name of the Thymeleaf template
         } else {
-            return "redirect:/doctor/login";
+            return "redirect:/doctor/login";  // If no doctor is found in the session, redirect to login
         }
-        return "doctor_dashboard";
     }
 
     // Logout doctor and clear session

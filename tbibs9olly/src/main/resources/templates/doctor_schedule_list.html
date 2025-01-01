@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor's Schedule</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Schedule for Doctor</h1>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Day of Week</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.dayOfWeek}"></td>
+            <td th:text="${schedule.startTime}"></td>
+            <td th:text="${schedule.endTime}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p><a href="/doctor/schedules/add/${doctorId}" class="btn btn-primary">Add a New Schedule</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
