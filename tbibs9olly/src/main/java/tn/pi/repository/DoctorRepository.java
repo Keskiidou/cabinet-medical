@@ -1,10 +1,7 @@
-package tn.pi.reposotry;
+package tn.pi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import tn.pi.entity.Doctor;
-
-
-import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
      Doctor findByName(String name);

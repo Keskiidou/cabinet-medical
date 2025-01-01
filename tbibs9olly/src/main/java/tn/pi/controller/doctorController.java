@@ -1,7 +1,6 @@
 package tn.pi.controller;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tn.pi.entity.Doctor;
 import tn.pi.entity.Patient;
-import tn.pi.reposotry.DoctorRepository;
-import tn.pi.reposotry.PatientRepository;
-
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import tn.pi.repository.DoctorRepository;
+import tn.pi.repository.PatientRepository;
 
 @Controller
 public class doctorController {
@@ -58,12 +54,12 @@ public class doctorController {
         Doctor doctor = doctorRepository.findByName(name);
 
         if (doctor != null && doctor.getAccessCode().equals(accessCode)) {
-            // Store doctor information in session after successful login
+
             session.setAttribute("doctor", doctor);
             return "redirect:/doctor/dashboard"; // Redirect to dashboard after login
         } else {
             model.addAttribute("error", "Invalid credentials. Please try again.");
-            return "doctor_login"; // If authentication fails, show the login form again
+            return "doctor_login";
         }
     }
 
@@ -75,9 +71,9 @@ public class doctorController {
             model.addAttribute("doctor", doctor); // Add doctor data to the model for displaying
             System.out.println("Doctor info in session: " + doctor.getName() + ", " + doctor.getEmail() + ", " + doctor.getAddress() + ", " + doctor.getPhone());
         } else {
-            return "redirect:/doctor/login"; // If no doctor found in session, redirect to login
+            return "redirect:/doctor/login";
         }
-        return "doctor_dashboard"; // Return the dashboard view
+        return "doctor_dashboard";
     }
 
     // Logout doctor and clear session

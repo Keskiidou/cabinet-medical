@@ -3,12 +3,13 @@ package tn.pi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Doctor {
 
     @Id
@@ -25,7 +26,8 @@ public class Doctor {
     public Doctor(Long id) {
         this.id = id;
     }
-    public void setAccessCode(String accessCode) {
-        this.accessCode = accessCode;
+    public String getAccessCode() {
+        return this.accessCode;
     }
+
 }
