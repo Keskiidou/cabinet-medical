@@ -68,14 +68,14 @@ public class doctorController {
         if (doctor != null) {
             return doctor.getId();
         }
-        return null; // Or throw an exception depending on your logic
+        return null;
     }
     // Dashboard for logged-in doctor
     @GetMapping("/doctor/dashboard")
     public String dashboard(Model model, HttpSession session) {
         Long doctorId = getCurrentDoctorId(session);  // Get the current doctor's ID
         if (doctorId != null) {
-            model.addAttribute("doctorId", doctorId);  // Add the doctorId to the model
+            model.addAttribute("doctorId", doctorId);
             return "doctor_dashboard";  // Name of the Thymeleaf template
         } else {
             return "redirect:/doctor/login";  // If no doctor is found in the session, redirect to login

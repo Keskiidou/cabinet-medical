@@ -5,7 +5,123 @@
     <title>Doctor's Schedule</title>
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
 </head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    body {
+        background-color: #f8f9fa;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        background-color: #212529;
+        color: white;
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .RAZZI {
+        font-size: 1.5rem;
+        margin: 10px 0 20px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        padding: 15px 20px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #007bff, #6f42c1);
+        transition: all 0.3s ease;
+    }
+    .RAZZI:hover {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #6f42c1, #007bff);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    .sidebar a {
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 1rem;
+        margin: 5px 0;
+        border-radius: 5px;
+        text-align: center;
+        width: 90%;
+    }
+    .sidebar a:hover {
+        background-color: #495057;
+    }
+    .navbar {
+        background-color: #343a40;
+        padding: 10px 20px;
+        position: fixed;
+        top: 0;
+        left: 240px; /* Adjust to align with the sidebar */
+        right: 0;
+        width: calc(100% - 240px); /* Ensures navbar takes the remaining space */
+        z-index: 1030;
+    }
+    .content {
+        margin-top: 56px;
+        margin-left: 240px;
+        padding: 20px;
+    }
+    .navbar .navbar-brand {
+        color: white;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+    .navbar .nav-link {
+        color: white;
+        font-size: 1rem;
+        margin: 0 10px;
+    }
+    .navbar .nav-link:hover {
+        color: #adb5bd;
+    }
+    .navbar .btn {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+    }
+</style>
 <body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <a th:href="@{/doctor/dashboard}" class="RAZZI">Doctor Dashboard</a>
+    <a class="dropdown-item" th:href="@{/doctor/schedules/add/{doctorId}(doctorId=${doctorId})}">Add Schedule</a>
+    <a class="dropdown-item" th:href="@{/doctor/schedules/doctor/{doctorId}(doctorId=${doctorId})}">View Schedules</a>
+    <a th:href="@{/doctor/patient}">Patients</a>
+    <a href="#payments">Payments</a>
+    <a href="#settings">Settings</a>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Welcome, Doctor</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light btn-sm" href="#logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 <div class="container">
     <h1>Schedule for Doctor</h1>
 
@@ -15,6 +131,7 @@
             <th>Day of Week</th>
             <th>Start Time</th>
             <th>End Time</th>
+            <th>Availabilty</th>
         </tr>
         </thead>
         <tbody>
@@ -22,11 +139,12 @@
             <td th:text="${schedule.dayOfWeek}"></td>
             <td th:text="${schedule.startTime}"></td>
             <td th:text="${schedule.endTime}"></td>
+            <td th:text="${schedule.isAvailable() ? 'Available' : 'Unavailable'}"></td>
         </tr>
         </tbody>
     </table>
 
-    <p><a href="/doctor/schedules/add/${doctorId}" class="btn btn-primary">Add a New Schedule</a></p>
+    <p><a  th:href="@{/doctor/schedules/add/{doctorId}(doctorId=${doctorId})}" class="btn btn-primary">Add a New Schedule</a></p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

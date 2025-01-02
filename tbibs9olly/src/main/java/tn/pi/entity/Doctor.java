@@ -6,7 +6,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
@@ -29,5 +28,10 @@ public class Doctor {
     public String getAccessCode() {
         return this.accessCode;
     }
+    public Long getId() {
+        return id;
+    }
 
+    public Doctor() {
+    }
 }

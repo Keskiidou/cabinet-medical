@@ -75,6 +75,6 @@ public class ScheduleController {
             return "docotr_dashboard"; // Return to the form with an error
         }
 
-        return "redirect:/doctor/schedules/doctor/" + doctorId; // Redirect to the doctor’s schedule page
+        return "redirect:/doctor/schedules/doctor/" + doctorId;
     }
 }

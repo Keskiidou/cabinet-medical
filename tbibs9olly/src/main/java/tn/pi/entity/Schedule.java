@@ -82,12 +82,8 @@ public class Schedule {
         return this.doctor != null ? this.doctor.getId() : null;
     }
 
-    // Setter for Doctor ID (if you need to set doctorId directly)
     public void setDoctorId(Long doctorId) {
-        if (this.doctor == null) {
-            this.doctor = new Doctor();
-        }
-        this.doctor.setId(doctorId);
+        this.doctor = new Doctor(doctorId);
     }
 
     // Getter and Setter for Doctor
