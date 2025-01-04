@@ -14,10 +14,13 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByDoctor_Id(Long doctorId);  // Use the doctor relationship's id
 
-    @Query("SELECT s FROM Schedule s WHERE s.dayOfWeek = :dayOfWeek AND s.doctor.id = :doctorId " +
+    @Query("SELECT s FROM Schedule s WHERE s.dayOfMonth = :dayOfMonth AND s.month = :month " +
+            "AND s.doctor.id = :doctorId " +
             "AND (:startTime < s.endTime AND :endTime > s.startTime)")
     List<Schedule> findOverlappingSchedules(@Param("doctorId") Long doctorId,
-                                            @Param("dayOfWeek") DayOfWeek dayOfWeek,
+                                            @Param("dayOfMonth") int dayOfMonth,
+                                            @Param("month") int month,
                                             @Param("startTime") LocalTime startTime,
                                             @Param("endTime") LocalTime endTime);
+
 }

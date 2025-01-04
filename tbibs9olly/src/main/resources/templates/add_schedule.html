@@ -63,9 +63,9 @@
       padding: 10px 20px;
       position: fixed;
       top: 0;
-      left: 240px; /* Adjust to align with the sidebar */
+      left: 240px;
       right: 0;
-      width: calc(100% - 240px); /* Ensures navbar takes the remaining space */
+      width: calc(100% - 240px);
       z-index: 1030;
     }
     .content {
@@ -91,7 +91,6 @@
       padding: 5px 10px;
     }
   </style>
-
 </head>
 <body>
 <!-- Sidebar -->
@@ -109,7 +108,6 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Welcome, Doctor</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -125,49 +123,94 @@
       </div>
     </div>
   </nav>
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-sm border-0">
-        <div class="card-header bg-primary text-white text-center">
-          <h2 class="h5 mb-0">Add Schedule</h2>
-        </div>
-        <div class="card-body">
-          <p class="text-center mb-4"><strong>Doctor ID:</strong> <span th:text="${doctorId}"></span></p>
 
-          <form th:action="@{'/doctor/schedules/add/' + ${doctorId}}" method="post">
-            <input type="hidden" name="doctorId" value="${doctorId}" />
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+          <div class="card-header bg-primary text-white text-center">
+            <h2 class="h5 mb-0">Add Schedule</h2>
+          </div>
+          <div class="card-body">
+            <p class="text-center mb-4"><strong>Doctor ID:</strong> <span th:text="${doctorId}"></span></p>
 
-            <div class="mb-3">
-              <label for="dayOfWeek" class="form-label">Day of Week</label>
-              <select class="form-select" name="dayOfWeek" id="dayOfWeek" required>
-                <option value="" disabled selected>Select a day</option>
-                <option value="MONDAY">Monday</option>
-                <option value="TUESDAY">Tuesday</option>
-                <option value="WEDNESDAY">Wednesday</option>
-                <option value="THURSDAY">Thursday</option>
-                <option value="FRIDAY">Friday</option>
-                <option value="SATURDAY">Saturday</option>
-                <option value="SUNDAY">Sunday</option>
-              </select>
-            </div>
+            <form th:action="@{'/doctor/schedules/add/' + ${doctorId}}" method="post">
+              <input type="hidden" name="doctorId" value="${doctorId}" />
 
-            <div class="mb-3">
-              <label for="startTime" class="form-label">Start Time</label>
-              <input type="time" class="form-control" id="startTime" name="startTime" required>
-            </div>
+              <!-- Month Dropdown -->
+              <div class="mb-3">
+                <label for="month" class="form-label">Month</label>
+                <select class="form-select" name="month" id="month" required onchange="updateDays()">
+                  <option value="" disabled selected>Select a month</option>
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
 
-            <button type="submit" class="btn btn-success w-100">Add Schedule</button>
+              <!-- Day of Month Dropdown -->
+              <div class="mb-3">
+                <label for="dayOfMonth" class="form-label">Day of Month</label>
+                <select class="form-select" name="dayOfMonth" id="dayOfMonth" required>
+                  <!-- Days will be dynamically populated -->
+                </select>
+              </div>
 
-            <div th:if="${error}" class="alert alert-danger mt-3">${error}</div>
-          </form>
-        </div>
-        <div class="card-footer text-center bg-light">
-          <a th:href="@{'/doctor/schedules/doctor/' + ${doctorId}}" class="btn btn-link">Back to Doctor's Schedule</a>
+              <div class="mb-3">
+                <label for="startTime" class="form-label">Start Time</label>
+                <input type="time" class="form-control" id="startTime" name="startTime" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100">Add Schedule</button>
+
+              <div th:if="${error}" class="alert alert-danger mt-3">${error}</div>
+            </form>
+          </div>
+          <div class="card-footer text-center bg-light">
+            <a th:href="@{'/doctor/schedules/doctor/' + ${doctorId}}" class="btn btn-link">Back to Doctor's Schedule</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  function updateDays() {
+    const month = document.getElementById('month').value;
+    const daySelect = document.getElementById('dayOfMonth');
+
+    // Clear the current options
+    daySelect.innerHTML = '';
+
+    // Get the number of days in the selected month
+    let daysInMonth = 31;
+    if (month == '2') {
+      // Check if it's a leap year
+      const year = new Date().getFullYear();
+      daysInMonth = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28; // Leap year check
+    } else if (['4', '6', '9', '11'].includes(month)) {
+      daysInMonth = 30;
+    }
+
+    // Populate day dropdown
+    for (let day = 1; day <= daysInMonth; day++) {
+      const option = document.createElement('option');
+      option.value = day;
+      option.textContent = day;
+      daySelect.appendChild(option);
+    }
+  }
+</script>
+
 </body>
 </html>

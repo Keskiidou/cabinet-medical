@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -16,8 +17,13 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
+
+    @Column(nullable = false)
+    private int dayOfMonth;
+
+    // Storing month (1-12)
+    @Column(nullable = false)
+    private int month;
 
     @Column(nullable = false)
     private LocalTime startTime;
@@ -32,7 +38,7 @@ public class Schedule {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = false)
     private Doctor doctor;
 
-    // Getter and Setter for ID
+
     public Long getId() {
         return id;
     }
@@ -40,15 +46,24 @@ public class Schedule {
     public void setId(Long id) {
         this.id = id;
     }
-
-    // Getter and Setter for DayOfWeek
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
+    // Getter and Setter for DayOfMonth
+    public int getDayOfMonth() {
+        return dayOfMonth;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDayOfMonth(int dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
     }
+
+    // Getter and Setter for Month
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
 
     // Getter and Setter for StartTime
     public LocalTime getStartTime() {

@@ -87,9 +87,6 @@
       font-size: 0.9rem;
       padding: 5px 10px;
     }
-    .table-responsive {
-      overflow-x: auto; /* Allows horizontal scrolling */
-    }
   </style>
 </head>
 <body>
@@ -97,7 +94,8 @@
 <!-- Sidebar -->
 <div class="sidebar">
   <a th:href="@{/doctor/dashboard}" class="RAZZI">Doctor Dashboard</a>
-  <a th:href="@{/doctor/schedules/add/{doctorId}(doctorId=${doctorId})}" class="active">Schedule</a>
+  <a class="dropdown-item" th:href="@{/doctor/schedules/add/{doctorId}(doctorId=${doctorId})}">Add Schedule</a>
+  <a class="dropdown-item" th:href="@{/doctor/schedules/doctor/{doctorId}(doctorId=${doctorId})}">View Schedules</a>
   <a th:href="@{/doctor/patient}">Patients</a>
   <a href="#payments">Payments</a>
   <a href="#settings">Settings</a>
@@ -108,7 +106,6 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Welcome, Doctor</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -118,7 +115,7 @@
             <a class="nav-link" data-bs-toggle="modal" data-bs-target="#profileModal">Profile</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link btn btn-outline-light btn-sm" href="#logout">Logout</a>
+            <a class="nav-link btn btn-outline-light btn-sm" th:href="@{/doctor/logout}">Logout</a>
           </li>
         </ul>
       </div>

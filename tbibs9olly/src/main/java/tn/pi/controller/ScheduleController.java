@@ -10,6 +10,7 @@ import tn.pi.repository.DoctorRepository;
 import tn.pi.repository.ScheduleRepository;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -30,51 +31,62 @@ public class ScheduleController {
     public String listSchedulesForDoctor(@PathVariable Long doctorId, Model model) {
         List<Schedule> schedules = scheduleRepository.findByDoctor_Id(doctorId);
         model.addAttribute("schedules", schedules);
-        model.addAttribute("doctorId", doctorId);  // Pass doctorId to the form
-        return "doctor_schedule_list"; // Show all schedules for the doctor
+        model.addAttribute("doctorId", doctorId);
+
+        return "doctor_schedule_list";
     }
 
     @GetMapping("/add/{doctorId}")
     public String showAddScheduleForm(@PathVariable Long doctorId, Model model) {
-        System.out.println("Doctor ID in showAddScheduleForm: " + doctorId);  // Debugging line
-        model.addAttribute("doctorId", doctorId); // Pass doctorId to the form
+        // Check if doctor exists
+        Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
+        if (doctor == null) {
+            model.addAttribute("error", "Doctor not found.");
+            return "redirect:/doctor/dashboard";  // Redirect to the dashboard or login if doctor not found
+        }
+
+        System.out.println("Doctor ID in showAddScheduleForm: " + doctorId);
+        model.addAttribute("doctorId", doctorId);
         model.addAttribute("doctors", doctorRepository.findAll());
         return "add_schedule"; // Form to add schedule
     }
 
 
+
     @PostMapping("/add/{doctorId}")
     public String addSchedule(
             @PathVariable Long doctorId,
-            @RequestParam("dayOfWeek") DayOfWeek dayOfWeek,
             @RequestParam("startTime") LocalTime startTime,
+            @RequestParam("dayOfMonth") int dayOfMonth,
+            @RequestParam("month") int month,
             Model model
     ) {
         LocalTime endTime = startTime.plusHours(2);
         boolean isAvailable = true;
 
-
-        List<Schedule> overlappingSchedules = scheduleRepository.findOverlappingSchedules(doctorId, dayOfWeek, startTime, endTime);
-
+        List<Schedule> overlappingSchedules = scheduleRepository.findOverlappingSchedules(doctorId, dayOfMonth, month, startTime, endTime);
         if (!overlappingSchedules.isEmpty()) {
             model.addAttribute("error", "The schedule overlaps with an existing slot.");
-            return "add_schedule";
+            return "add_schedule"; // Return to the form with an error message
         }
+
 
         Schedule schedule = new Schedule();
         Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
         if (doctor != null) {
             schedule.setDoctorId(doctorId);
-            schedule.setDayOfWeek(dayOfWeek);
+            schedule.setDayOfMonth(dayOfMonth);
+            schedule.setMonth(month);
             schedule.setStartTime(startTime);
             schedule.setEndTime(endTime);
             schedule.setAvailable(isAvailable);
             scheduleRepository.save(schedule);
         } else {
             model.addAttribute("error", "Doctor not found.");
-            return "docotr_dashboard"; // Return to the form with an error
+            return "doctor_dashboard"; // Return to the form with an error
         }
 
         return "redirect:/doctor/schedules/doctor/" + doctorId;
     }
+
 }

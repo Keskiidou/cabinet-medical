@@ -70,15 +70,60 @@ public class doctorController {
         }
         return null;
     }
+    private String getCurrentDoctorname(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getName();
+        }
+        return null;
+    }
+    private String getCurrentDoctoremail(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getEmail();
+        }
+        return null;
+    }
+    private String getCurrentDoctorphone(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getPhone();
+        }
+        return null;
+    }
+    private String getCurrentAddress(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getAddress();
+        }
+        return null;
+    }
+    private String getCurrentspec(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            return doctor.getSpecialization();
+        }
+        return null;
+    }
     // Dashboard for logged-in doctor
     @GetMapping("/doctor/dashboard")
     public String dashboard(Model model, HttpSession session) {
-        Long doctorId = getCurrentDoctorId(session);  // Get the current doctor's ID
+        Long doctorId = getCurrentDoctorId(session);
+        String doctorname = getCurrentDoctorname(session);
+        String doctoremail = getCurrentDoctoremail(session);
+        String doctorphone = getCurrentDoctorphone(session);
+        String doctoraddress = getCurrentAddress(session);
+        String doctorspecialization = getCurrentspec(session);
         if (doctorId != null) {
             model.addAttribute("doctorId", doctorId);
-            return "doctor_dashboard";  // Name of the Thymeleaf template
+            model.addAttribute("doctorname", doctorname);
+            model.addAttribute("doctoremail", doctoremail);
+            model.addAttribute("doctorphone", doctorphone);
+            model.addAttribute("doctoraddress", doctoraddress);
+            model.addAttribute("doctorspecialization", doctorspecialization);
+            return "doctor_dashboard";
         } else {
-            return "redirect:/doctor/login";  // If no doctor is found in the session, redirect to login
+            return "redirect:/doctor/login";
         }
     }
 

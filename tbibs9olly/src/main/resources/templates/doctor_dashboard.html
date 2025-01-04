@@ -97,6 +97,7 @@
     <a th:href="@{/doctor/dashboard}" class="RAZZI">Doctor Dashboard</a>
     <a class="dropdown-item" th:href="@{/doctor/schedules/add/{doctorId}(doctorId=${doctorId})}">Add Schedule</a>
     <a class="dropdown-item" th:href="@{/doctor/schedules/doctor/{doctorId}(doctorId=${doctorId})}">View Schedules</a>
+
     <a th:href="@{/doctor/patient}">Patients</a>
     <a href="#payments">Payments</a>
     <a href="#settings">Settings</a>
@@ -107,7 +108,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Welcome, Doctor</a>
+            <a class="navbar-brand" href="#" th:text="'Welcome, ' + ${doctorname}">Welcome, Doctor</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -138,24 +139,26 @@
     </div>
 
     <!-- Profile Modal -->
-<!--    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">-->
-<!--        <div class="modal-dialog">-->
-<!--            <div class="modal-content">-->
-<!--                <div class="modal-header">-->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Doctor Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Display doctor details -->
+                    <p><strong>Name:</strong> <span th:text="${doctorname}"></span></p>
+                    <p><strong>Specialization:</strong> <span th:text="${doctorspecialization}"></span></p>
+                    <p><strong>Email:</strong> <span th:text="${doctoremail}"></span></p>
+                    <p><strong>Phone:</strong> <span th:text="${doctorphone}"></span></p>
+                    <p><strong>Address:</strong> <span th:text="${doctoraddress}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<!--                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                </div>-->
-<!--                <div class="modal-body">-->
-<!--                    &lt;!&ndash; Display doctor details &ndash;&gt;-->
-<!--                    <p><strong>Name:</strong> <span th:text="${doctor.name}"></span></p>-->
-<!--                    <p><strong>Specialization:</strong> <span th:text="${doctor.specialization}"></span></p>-->
-<!--                    <p><strong>Email:</strong> <span th:text="${doctor.email}"></span></p>-->
-<!--                    <p><strong>Phone:</strong> <span th:text="${doctor.phone}"></span></p>-->
-<!--                    <p><strong>Address:</strong> <span th:text="${doctor.address}"></span></p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+
 
 </div>
 
