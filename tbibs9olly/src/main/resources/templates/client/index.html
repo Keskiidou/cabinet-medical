@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAZZI - Medical Office Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007bff;
+        }
+
+        .hero-section {
+            background-color: #007bff;
+            color: #fff;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-body i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .card-body i:hover {
+            transform: scale(1.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+
+        .footer {
+            background-color: #212529;
+            color: #adb5bd;
+            padding: 20px 0;
+        }
+
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .action-button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/index}">RAZZI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/index}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/doctor}">Doctors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">History</a>
+                </li>
+
+                <!-- Show Profile link if user is logged in -->
+                <li class="nav-item" th:if="${loggedInPatient != null}">
+                    <a class="nav-link" th:href="@{/profile}">Profile</a>
+                </li>
+
+                <!-- Show Login link if user is not logged in -->
+                <li class="nav-item" th:unless="${loggedInPatient != null}">
+                    <a class="nav-link" th:href="@{/login}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1>Welcome to RAZZI</h1>
+        <p>Effortless medical office management at your fingertips.</p>
+    </div>
+</section>
+
+<div class="text-center mt-4">
+    <a th:href="@{/appointment}" class="action-button">Book an Appointment</a>
+</div>
+<!-- Main Content -->
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-circle text-primary"></i>
+                    <h5 class="card-title">Manage Doctors</h5>
+                    <p class="card-text">View, add, or edit doctors' details easily.</p>
+                    <a th:href="@{/doctor}" class="btn btn-primary">View Doctors</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-person-plus text-success"></i>
+                    <h5 class="card-title">New Patient</h5>
+                    <p class="card-text">Register new patients quickly and efficiently.</p>
+                    <a th:href="@{/register}" class="btn btn-success">Register Patient</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="bi bi-lock text-danger"></i>
+                    <h5 class="card-title">Login</h5>
+                    <p class="card-text">Access your dashboard with secure login.</p>
+                    <a th:href="@{/login}" class="btn btn-danger">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div>
+
+</div>
+
+    <p>.</p>
+
+</div>
+
+<!-- Footer -->
+<footer class="footer text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 RAZZI - All Rights Reserved</p>
+        <small>Powered by <a href="https://spring.io/" target="_blank">Spring Boot</a> & <a href="https://www.thymeleaf.org/" target="_blank">Thymeleaf</a></small>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

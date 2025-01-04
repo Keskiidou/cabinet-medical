@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tn.pi.entity.Doctor;
@@ -23,6 +24,17 @@ public class doctorController {
 
     public doctorController(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
+    }
+
+    @GetMapping("/doctor/{id}")
+    public String getDoctorProfile(@PathVariable Long id, Model model) {
+        Doctor doctor = doctorRepository.findById(id).orElse(null);
+        if (doctor == null) {
+            return "redirect:/doctor/login";  // Redirect to login if the doctor is not found
+        }
+
+        model.addAttribute("doctor", doctor);  // Pass doctor object to the view
+        return "doctor";  // Return to the doctor.html page
     }
 
     @GetMapping("/doctor/patient")
@@ -54,7 +66,6 @@ public class doctorController {
         Doctor doctor = doctorRepository.findByName(name);
 
         if (doctor != null && doctor.getAccessCode().equals(accessCode)) {
-
             session.setAttribute("doctor", doctor);
             return "redirect:/doctor/dashboard"; // Redirect to dashboard after login
         } else {
@@ -107,6 +118,7 @@ public class doctorController {
     }
     // Dashboard for logged-in doctor
     @GetMapping("/doctor/dashboard")
+
     public String dashboard(Model model, HttpSession session) {
         Long doctorId = getCurrentDoctorId(session);
         String doctorname = getCurrentDoctorname(session);
