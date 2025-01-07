@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Appointments</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .appointments-header {
+            background-color: #007bff;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .appointments-header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .appointments-table {
+            margin-top: 40px;
+        }
+
+        .appointments-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .appointments-table th, .appointments-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .appointments-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .appointments-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .appointments-table .btn-view {
+            color: #007bff;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .appointments-table .btn-view:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header class="appointments-header">
+    <h1>Your Appointments</h1>
+</header>
+
+<!-- Table of Appointments -->
+<div class="container appointments-table">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Patient Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Doctor</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="appointment : ${appointments}">
+            <td th:text="${appointment.id}"></td>
+            <td th:text="${appointment.patientName}"></td>
+            <td th:text="${appointment.email}"></td>
+            <td th:text="${appointment.phone}"></td>
+            <td th:text="${appointment.doctor}"></td>
+            <td th:text="${appointment.message}"></td>
+            <td>
+                <!-- Example Action Button (View Details) -->
+                <button class="btn-view">View Details</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS (for functionality like dropdowns, etc.) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

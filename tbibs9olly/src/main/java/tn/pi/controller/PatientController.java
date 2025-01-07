@@ -143,12 +143,21 @@ public class PatientController {
         return "client/patient/register";
     }
     @PostMapping("/register")
-    public String registerPatient(@ModelAttribute("patient") Patient patient, BindingResult result) {
+    public String registerPatient(@ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "client/patient/register";
         }
-        // Process the registration logic
-        return "redirect:/success";
+
+        try {
+            // Save the patient to the database
+            patientRepo.save(patient);
+
+            // Redirect to the index page on successful registration
+            return "redirect:/index";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An error occurred during registration. Please try again.");
+            return "client/patient/register";
+        }
     }
 
 
@@ -161,11 +170,5 @@ public class PatientController {
         return "client/doctor/doctor"; // Show doctor page if logged in
     }
 
-    @GetMapping("/appointment")
-    public String showAppointmentPage(HttpSession session) {
-        if (session.getAttribute("loggedInPatient") == null) {
-            return "redirect:/login"; // Redirect to login page if not logged in
-        }
-        return "client/app/addAPP"; // Show appointment page if logged in
-    }
+
 }

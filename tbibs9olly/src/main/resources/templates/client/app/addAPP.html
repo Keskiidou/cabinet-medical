@@ -7,6 +7,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <!-- Google Fonts (Roboto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         body {
@@ -79,11 +81,18 @@
 
         .form-row {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
         }
 
         .form-row .form-group {
-            flex: 1;
+            flex: 1 1 45%;
+        }
+
+        @media (max-width: 768px) {
+            .form-row .form-group {
+                flex: 1 1 100%;
+            }
         }
     </style>
 </head>
@@ -121,87 +130,36 @@
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="form-container">
-                <form th:action="@{/appointments/book}" method="post">
+                <form th:action="@{/book}" th:object="${appointment}" method="post">
                     <!-- Patient Name -->
                     <div class="mb-4">
                         <label for="patientName" class="form-label">Full Name</label>
-                        <input type="text" id="patientName" name="patientName" class="form-control" placeholder="Enter your full name" required>
+                        <input type="text" id="patientName" th:field="*{patientName}" class="form-control" placeholder="Enter your full name" required>
                     </div>
-
                     <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
+                        <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter your email address" required>
                     </div>
-
                     <!-- Phone Number -->
                     <div class="mb-4">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter your phone number" required>
+                        <input type="tel" id="phone" th:field="*{phone}" class="form-control" placeholder="Enter your phone number" required>
                     </div>
-
-                    <!-- Appointment Month, Day, and Time -->
-                    <div class="mb-4 form-row">
-                        <!-- Month -->
-                        <div class="form-group">
-                            <label for="month" class="form-label">Month</label>
-                            <select id="month" name="month" class="form-select" required>
-                                <option value="" disabled selected>Select Month</option>
-                                <option value="01">January</option>
-                                <option value="02">February</option>
-                                <option value="03">March</option>
-                                <option value="04">April</option>
-                                <option value="05">May</option>
-                                <option value="06">June</option>
-                                <option value="07">July</option>
-                                <option value="08">August</option>
-                                <option value="09">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                        </div>
-
-                        <!-- Day -->
-                        <div class="form-group">
-                            <label for="day" class="form-label">Day</label>
-                            <select id="day" name="day" class="form-select" required>
-                                <option value="" disabled selected>Select Day</option>
-                                <!-- Days will be populated dynamically based on selected month -->
-                            </select>
-                        </div>
-
-                        <!-- Time -->
-                        <div class="form-group">
-                            <label for="time" class="form-label">Time</label>
-                            <select id="time" name="time" class="form-select" required>
-                                <option value="" disabled selected>Select Time</option>
-                                <option value="09:00">09:00 AM</option>
-                                <option value="10:00">10:00 AM</option>
-                                <option value="11:00">11:00 AM</option>
-                                <option value="01:00">01:00 PM</option>
-                                <option value="02:00">02:00 PM</option>
-                                <option value="03:00">03:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <!-- Doctor Selection -->
                     <div class="mb-4">
                         <label for="doctor" class="form-label">Select Doctor</label>
-                        <select id="doctor" name="doctor" class="form-select" required>
+                        <select id="doctor" th:field="*{doctor}" class="form-select" required>
                             <option value="" disabled selected>Select a doctor</option>
-                            <option value="Dr. John Doe">Dr. John Doe - Cardiology</option>
-                            <option value="Dr. Jane Smith">Dr. Jane Smith - Dermatology</option>
+                            <option th:each="doc : ${doctors}" th:value="${doc.id}" th:text="${doc.name + ' - ' + doc.specialization}"></option>
                         </select>
-                    </div>
 
+                    </div>
                     <!-- Message -->
                     <div class="mb-4">
                         <label for="message" class="form-label">Additional Notes</label>
-                        <textarea id="message" name="message" class="form-control" rows="3" placeholder="Enter any additional details or requests"></textarea>
+                        <textarea id="message" th:field="*{message}" class="form-control" rows="3" placeholder="Enter any additional details or requests"></textarea>
                     </div>
-
                     <!-- Submit Button -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-submit">Book Appointment</button>
@@ -222,31 +180,5 @@
 
 <!-- Bootstrap JS -->
 <script src="/webjars/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
-
-<!-- Custom JS to populate days based on month -->
-<script>
-    document.getElementById('month').addEventListener('change', function () {
-        const month = this.value;
-        const daySelect = document.getElementById('day');
-        daySelect.innerHTML = ''; // Clear current options
-
-        let daysInMonth;
-        if (month === '02') {  // February (28 or 29 days)
-            daysInMonth = 28;  // Assuming no leap year logic for simplicity
-        } else if (['04', '06', '09', '11'].includes(month)) {  // April, June, September, November
-            daysInMonth = 30;
-        } else {  // All other months
-            daysInMonth = 31;
-        }
-
-        // Populate day options
-        for (let day = 1; day <= daysInMonth; day++) {
-            const option = document.createElement('option');
-            option.value = day < 10 ? `0${day}` : day;
-            option.textContent = day;
-            daySelect.appendChild(option);
-        }
-    });
-</script>
 </body>
 </html>
