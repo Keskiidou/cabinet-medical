@@ -161,11 +161,5 @@ public class PatientController {
         return "client/doctor/doctor"; // Show doctor page if logged in
     }
 
-    @GetMapping("/appointment")
-    public String showAppointmentPage(HttpSession session) {
-        if (session.getAttribute("loggedInPatient") == null) {
-            return "redirect:/login"; // Redirect to login page if not logged in
-        }
-        return "client/app/addAPP"; // Show appointment page if logged in
-    }
+
 }
