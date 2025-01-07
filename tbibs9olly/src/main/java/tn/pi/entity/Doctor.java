@@ -10,6 +10,8 @@ import lombok.*;
 @Builder
 @Entity
 public class Doctor {
+    
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
