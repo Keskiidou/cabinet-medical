@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAZZI - Doctor Profile</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .doctor-profile-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .availability-table th, .availability-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .btn-appointment {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-appointment:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        footer {
+            background-color: #212529;
+            color: #adb5bd;
+        }
+        footer a {
+            color: #ffffff;
+        }
+        .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="/index">RAZZI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/appointment">Appointments</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Doctor Profile Section -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="doctor-profile-card text-center">
+                <h1 class="display-4 mb-3">Dr. John Doe</h1>
+                <p class="text-muted mb-4">Specialization: <strong>Cardiology</strong></p>
+                <hr>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><i class="bi bi-envelope"></i> <strong>Email:</strong> doctor@example.com</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="bi bi-telephone"></i> <strong>Phone:</strong> (123) 456-7890</p>
+                    </div>
+                </div>
+                <p><i class="bi bi-geo-alt"></i> <strong>Address:</strong> 1234 Clinic St, City</p>
+                <hr>
+                <div class="mb-4">
+                    <a href="/appointment" class="btn btn-appointment btn-lg">Book Appointment</a>
+                </div>
+                <h5 class="text-muted mb-3">Availability</h5>
+                <table class="table table-bordered availability-table">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Day</th>
+                        <th>Available Hours</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Monday</td>
+                        <td>9:00 AM - 3:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>10:00 AM - 5:00 PM</td>
+                    </tr>
+                    <tr>
+                        <td>Friday</td>
+                        <td>8:00 AM - 2:00 PM</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <div class="social-icons">
+                    <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-4">
+    <div class="container">
+        <p class="mb-1">&copy; 2025 RAZZI - All Rights Reserved</p>
+        <small>Powered by <a href="https://spring.io/">Spring Boot</a> & <a href="https://www.thymeleaf.org/">Thymeleaf</a></small>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="/webjars/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
