@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAZZI - Doctor Profile</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
+  <style>
+    .unavailable {
+      color: red;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">Doctors List</h1>
+  <div class="row">
+    <!-- Iterate over doctors and display a card for each doctor -->
+    <div class="col-md-4" th:each="doctor : ${doctors}">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title" th:text="${doctor.name}">Doctor Name</h5>
+          <p class="card-text" th:text="'Specialization: ' + ${doctor.specialization}">Specialization</p>
+          <p class="card-text" th:text="'Email: ' + ${doctor.email}">Email</p>
+          <p class="card-text" th:text="'Phone: ' + ${doctor.phone}">Phone</p>
+          <p class="card-text" th:text="'Address: ' + ${doctor.address}">Address</p>
+
+          <!-- Display the doctor's available schedule -->
+          <h6 class="mt-4">Schedule:</h6>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Day</th>
+              <th>Month</th>
+              <th>Start Time</th>
+              <th>Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Loop over the specific doctor's available schedule -->
+            <tr th:each="schedule : ${doctorSchedulesMap[doctor.id]}"
+                th:if="${schedule.isAvailable}"
+                class="clickable-row"
+                th:attr="data-schedule-id=${schedule.id}"
+                th:data-doctor-name="${doctor.name}"
+                th:data-schedule-info="${schedule.dayOfMonth} + ' ' + ${schedule.month} + ' ' + ${schedule.startTime}">
+              <td th:text="${schedule.dayOfMonth}">Day</td>
+              <td th:text="${schedule.month}">Month</td>
+              <td th:text="${schedule.startTime}">Start Time</td>
+              <td>
+                <span th:text="${schedule.isAvailable ? 'Yes' : 'No'}" th:classappend="${!schedule.isAvailable} ? 'unavailable' : ''"></span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <a id="appointmentButton" th:href="@{/appointment}" class="btn btn-primary">
+            Make an Appointment
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.clickable-row').forEach(function(row) {
+    row.addEventListener('click', function() {
+      // Check if the row is available
+      if (row.classList.contains('unavailable')) {
+        return; // Prevent selection if unavailable
+      }
+
+      // Get doctor name and schedule information
+      const doctor = row.closest('.card-body').querySelector('.card-title').textContent;
+      const schedule = row.getAttribute('data-schedule-id');
+
+      localStorage.setItem('selectedDoctorName', doctor);
+      localStorage.setItem('selectedScheduleId', schedule);
+
+      const appointmentButton = document.getElementById('appointmentButton');
+      appointmentButton.setAttribute('data-doctor-name', doctor);
+      appointmentButton.setAttribute('data-schedule-id', schedule);
+
+      console.log("Selected Doctor: " + doctor);
+      console.log("Selected schedule id: " + schedule);
+    });
+  });
+
+  document.getElementById('appointmentButton').addEventListener('click', function(event) {
+    const selectedDoctorName = localStorage.getItem('selectedDoctorName');
+    const selectedScheduleId = localStorage.getItem('selectedScheduleId');
+
+    if (!selectedDoctorName || !selectedScheduleId) {
+      alert('Please select a schedule before proceeding.');
+      event.preventDefault();
+    }
+  });
+</script>
+
+</body>
+<!-- Footer -->
+<footer class="text-center py-4">
+  <div class="container">
+    <p class="mb-1">&copy; 2025 RAZZI - All Rights Reserved</p>
+    <small>Powered by <a href="https://spring.io/">Spring Boot</a> & <a href="https://www.thymeleaf.org/">Thymeleaf</a></small>
+  </div>
+</footer>
+</html>

@@ -3,9 +3,7 @@ package tn.pi.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import tn.pi.entity.Schedule;
 @Entity
 @Getter
 @Setter
@@ -23,4 +21,13 @@ public class Appointment {
     private String doctor;
     @Column(length = 500)
     private String message;
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
+
+    @ManyToOne
+    @JoinColumn(name="patient_id")
+    private Patient patient;
+
+
 }

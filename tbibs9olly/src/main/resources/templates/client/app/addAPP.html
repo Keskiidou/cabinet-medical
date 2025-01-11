@@ -7,101 +7,35 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/webjars/bootstrap/5.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/webjars/bootstrap-icons/1.10.5/font/bootstrap-icons.css">
-    <!-- Google Fonts (Roboto) -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
         body {
             font-family: 'Roboto', Arial, sans-serif;
             background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
         }
-
         .appointment-header {
             background-color: #007bff;
             color: #fff;
             padding: 50px 0;
             text-align: center;
         }
-
-        .appointment-header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .appointment-header p {
-            font-size: 1.2rem;
-            margin: 0;
-        }
-
         .form-container {
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             padding: 30px;
             margin-top: -50px;
         }
-
-        .form-label {
-            font-weight: 600;
-            color: #333;
-        }
-
         .btn-submit {
             background-color: #007bff;
             color: #fff;
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 12px 20px;
-            border-radius: 6px;
-            border: none;
-            transition: 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: #0056b3;
-        }
-
-        footer {
-            background-color: #212529;
-            color: #adb5bd;
-            padding: 15px 0;
-        }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        .form-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1 1 45%;
-        }
-
-        @media (max-width: 768px) {
-            .form-row .form-group {
-                flex: 1 1 100%;
-            }
         }
     </style>
 </head>
 <body>
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="/index">RAZZI</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -117,50 +51,37 @@
     </div>
 </nav>
 
-<!-- Page Header -->
 <header class="appointment-header">
-    <div class="container">
-        <h1>Book Your Appointment</h1>
-        <p>Choose a date and time that works for you</p>
-    </div>
+    <h1>Book Your Appointment</h1>
+    <p>Choose a date and time that works for you</p>
 </header>
 
-<!-- Appointment Form -->
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="form-container">
                 <form th:action="@{/book}" th:object="${appointment}" method="post">
-                    <!-- Patient Name -->
+                    <div class="mb-4">
+                        <label for="doctor" class="form-label">Doctor</label>
+                        <input type="hidden" id="doctor" name="doctor" class="form-control" hidden>
+                    </div>
+                    <input type="hidden" id="schedule" name="schedule.id" th:field="*{schedule.id}">
                     <div class="mb-4">
                         <label for="patientName" class="form-label">Full Name</label>
-                        <input type="text" id="patientName" th:field="*{patientName}" class="form-control" placeholder="Enter your full name" required>
+                        <input type="text" id="patientName" th:field="*{patientName}" class="form-control" required>
                     </div>
-                    <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" id="email" th:field="*{email}" class="form-control" placeholder="Enter your email address" required>
+                        <input type="email" id="email" th:field="*{email}" class="form-control" required>
                     </div>
-                    <!-- Phone Number -->
                     <div class="mb-4">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" id="phone" th:field="*{phone}" class="form-control" placeholder="Enter your phone number" required>
+                        <input type="tel" id="phone" th:field="*{phone}" class="form-control" required>
                     </div>
-                    <!-- Doctor Selection -->
                     <div class="mb-4">
-                        <label for="doctor" class="form-label">Select Doctor</label>
-                        <select id="doctor" th:field="*{doctor}" class="form-select" required>
-                            <option value="" disabled selected>Select a doctor</option>
-                            <option th:each="doc : ${doctors}" th:value="${doc.id}" th:text="${doc.name + ' - ' + doc.specialization}"></option>
-                        </select>
-
+                        <label for="message" class="form-label">Symptoms</label>
+                        <textarea id="message" th:field="*{message}" class="form-control"></textarea>
                     </div>
-                    <!-- Message -->
-                    <div class="mb-4">
-                        <label for="message" class="form-label">Additional Notes</label>
-                        <textarea id="message" th:field="*{message}" class="form-control" rows="3" placeholder="Enter any additional details or requests"></textarea>
-                    </div>
-                    <!-- Submit Button -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-submit">Book Appointment</button>
                     </div>
@@ -170,15 +91,23 @@
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="text-center">
-    <div class="container">
-        <p class="mb-1">&copy; 2025 RAZZI - All Rights Reserved</p>
-        <small>Powered by <a href="https://spring.io/" target="_blank">Spring Boot</a> & <a href="https://www.thymeleaf.org/" target="_blank">Thymeleaf</a></small>
-    </div>
+<footer class="text-center mt-5">
+    <p>&copy; 2025 RAZZI</p>
 </footer>
 
-<!-- Bootstrap JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const doctorName = localStorage.getItem('selectedDoctorName');
+        const scheduleId = localStorage.getItem('selectedScheduleId');
+
+        if (doctorName && scheduleId) {
+            document.getElementById('doctor').value = doctorName;
+            document.getElementById('schedule').value = scheduleId;
+        } else {
+            alert('Error: Missing doctor or schedule information.');
+        }
+    });
+</script>
 <script src="/webjars/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

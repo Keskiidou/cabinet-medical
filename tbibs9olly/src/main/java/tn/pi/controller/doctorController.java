@@ -12,8 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tn.pi.entity.Doctor;
 import tn.pi.entity.Patient;
+import tn.pi.entity.Schedule;
 import tn.pi.repository.DoctorRepository;
 import tn.pi.repository.PatientRepository;
+import tn.pi.repository.ScheduleRepository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class doctorController {
@@ -21,6 +27,8 @@ public class doctorController {
     private final DoctorRepository doctorRepository;
     @Autowired
     private PatientRepository patientrepo;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     public doctorController(DoctorRepository doctorRepository) {
         this.doctorRepository = doctorRepository;
@@ -145,4 +153,24 @@ public class doctorController {
         session.invalidate(); // Invalidate the session to log the doctor out
         return "redirect:/doctor/login"; // Redirect to login page
     }
+    @GetMapping("/alldoctors")
+    public String getAllDoctors(Model model) {
+        List<Doctor> doctors = doctorRepository.findAll();
+
+        // Create a map to store doctor schedules
+        Map<Long, List<Schedule>> doctorSchedulesMap = new HashMap<>();
+
+        // Populate the map with doctor schedules
+        for (Doctor doctor : doctors) {
+            List<Schedule> schedules = scheduleRepository.findByDoctor_Id(doctor.getId());
+            doctorSchedulesMap.put(doctor.getId(), schedules);
+        }
+
+        // Add the doctors list and the map of schedules to the model
+        model.addAttribute("doctors", doctors);
+        model.addAttribute("doctorSchedulesMap", doctorSchedulesMap);
+
+        return "client/doctor/doctor-list";
+    }
+
 }
