@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import tn.pi.entity.Appointment;
 import tn.pi.entity.Doctor;
 import tn.pi.entity.Patient;
 import tn.pi.entity.Schedule;
@@ -45,24 +46,7 @@ public class doctorController {
         return "doctor";  // Return to the doctor.html page
     }
 
-    @GetMapping("/doctor/patient")
-    public String patientList(
-            Model model,
-            @RequestParam(name = "keyword", defaultValue = "") String keyword,
-            @RequestParam(name = "page", defaultValue = "0") int page
-    ) {
-        int pageSize = 10; // Number of patients per page
-        Page<Patient> patientsPage = patientrepo.findByNameContainingIgnoreCase(
-                keyword, PageRequest.of(page, pageSize)
-        );
 
-        model.addAttribute("patients", patientsPage.getContent());
-        model.addAttribute("pages", new int[patientsPage.getTotalPages()]);
-        model.addAttribute("page", page);
-        model.addAttribute("keyword", keyword);
-
-        return "all-patients";
-    }
 
     @GetMapping("/doctor/login")
     public String showLoginForm(Model model) {
@@ -172,5 +156,6 @@ public class doctorController {
 
         return "client/doctor/doctor-list";
     }
+
 
 }

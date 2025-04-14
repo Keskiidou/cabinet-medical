@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tn.pi.entity.Appointment;
+import tn.pi.entity.Doctor;
 import tn.pi.entity.Patient;
 import tn.pi.entity.Schedule;
 import tn.pi.repository.AppointmentRepository;
 import tn.pi.repository.DoctorRepository;
 import tn.pi.repository.ScheduleRepository;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -96,7 +98,32 @@ public class AppointmentController {
         model.addAttribute("successMessage", "Your appointment was booked successfully!");
         return "redirect:/appointments";
     }
-    
+    private String getCurrentDoctorname(HttpSession session) {
+        Doctor doctor = (Doctor) session.getAttribute("doctor");
+        if (doctor != null) {
+            System.out.println("Doctor found: " + doctor.getName());
+            return doctor.getName();
+        }
+        System.out.println("No doctor found in session");
+        return null;
+    }
+
+    @GetMapping("/doctor/patient")  // Note: mapping is still “/doctor/patient”
+    public String showPatientsAppointments(Model model, HttpSession session) {
+        String doctorname = getCurrentDoctorname(session);
+        if (doctorname == null) {
+            return "redirect:/doctor/login";
+        }
+        List<Appointment> appointments = appointmentRepository.findByDoctor(doctorname);
+        model.addAttribute("appointments", appointments);
+        model.addAttribute("doctorname", doctorname);
+        // Optionally, add other details (doctorId, etc.) if you use them in the sidebar links.
+        return "all-patients"; // This is the name of your template file (all-patients.html)
+    }
+
+
+
+
 
 
 }
